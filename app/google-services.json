@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "512098682124",
+    "project_id": "probandofirebasev1",
+    "storage_bucket": "probandofirebasev1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512098682124:android:b7e3104653627edae9f529",
+        "android_client_info": {
+          "package_name": "com.iessanalberto.dam2.probandologinfirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOWwZqCuuU_YXp9GQGeto1HnHaDjfUrTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
