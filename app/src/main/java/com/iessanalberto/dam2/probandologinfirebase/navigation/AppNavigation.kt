@@ -14,8 +14,12 @@ fun AppNavigation(){
         composable(route = AppScreens.LoginScreen.route) {
             LoginScreen(
                 // Le pasamos solamente la ruta, no el nav completo.
-                onLoginSuccess = {navController.navigate(AppScreens.MenuScreen.route)}
+                // Una funcion
+                onLoginSuccess = {navController.navigate(AppScreens.MenuScreen.route)},
+                // si hubieses mas pantallas
+                // otraPantallaFunciones = {navController.navigate(AppScreens.otraPantalla.route)}
             ) }
+        // Forma antigua
         composable(route = AppScreens.MenuScreen.route){ MenuScreen(navController = navController) }
     }
 }

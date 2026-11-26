@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -36,11 +38,19 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 }
 
 @Composable
-fun LoginBodyContent(modifier: Modifier, onLoginSucces: () -> Unit) {
+fun LoginBodyContent(modifier: Modifier, onLoginSucces: () -> Unit
+//si hubiese otra pantalla otraPantallaFuncion: () -> Unit
+) {
 
     val context = LocalContext.current
     val loginViewModel: LoginViewModel = viewModel()
     val loginState by loginViewModel.loginState.collectAsState()
+    // la primera vez que entra a la ventana se ejecuta, se vuelve a ejecutar cuando isLogged cambie
+    LaunchedEffect(loginState.isLogged) {
+        if (loginState.isLogged) {
+            onLoginSucces()
+        }
+    }
 
     Column(modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -56,18 +66,24 @@ fun LoginBodyContent(modifier: Modifier, onLoginSucces: () -> Unit) {
             label = { Text(text = "Introduce contraseña") },
             onValueChange = {loginViewModel.onPasswordChanged(password = it)}
         )
-        Button(onClick = {
-            if (loginViewModel.conectar()){
-                onLoginSucces() // Navega a la ventana del menú (MenúScreen). Ejecuta la funcion
-            } else {
-                Toast.makeText(context,"Usuario/Contraseña incorrectos", Toast.LENGTH_SHORT).show()
-                if (loginState.numIntentos >= 2) { // Por el estado, vamos con restraso
-                    Toast.makeText(context,"Has superado el número de intentos", Toast.LENGTH_SHORT).show()
-                    System.exit(10) // Mata todo
-                }
+        if (loginState.isLoading) { // Si está cargado, muestra el circular progress, si no botón conectar
+            CircularProgressIndicator()
+        } else {
+            Button(
+                enabled = loginState.usuario.isNotBlank() && loginState.password.isNotBlank(), // el boton se habilita solo si tiene campos
+                onClick = {
+                loginViewModel.conectar() // aqui es donde cambiamos la conexion
+            }) {
+                Text(text = "Conectar")
             }
-        }) {
-            Text(text = "Conectar")
+        }
+        if (loginState.errorMessage.isNotBlank()) {
+            Toast.makeText(context,loginState.errorMessage, Toast.LENGTH_SHORT).show()
+            loginViewModel.clearErrorMessage() // Una vez mostrado lo limpiamos
+            if (loginState.numIntentos >=100) { // TODO num intentos
+                Toast.makeText(context,"Has superado el número de intentos", Toast.LENGTH_SHORT).show()
+                System.exit(10)
+            }
         }
     }
 }

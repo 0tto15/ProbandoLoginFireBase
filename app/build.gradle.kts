@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.gms.google-services") // Este otro
+    id("com.google.gms.google-services") // Este otro TODO estos
 }
 
 android {
@@ -45,8 +45,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:35.2.0"))
+    // Firebase (TODO IMPORTANTE QUE SEA LA 31.0.0. PORQUE LA ACTUAL NO SIRVE PA´ NA (acordarse de los plugins de arriba)
+    implementation(platform("com.google.firebase:firebase-bom:31.0.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx:23.2.1")
     // Navegación
